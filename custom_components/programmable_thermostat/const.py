@@ -18,12 +18,14 @@ DEFAULT_MIN_TEMP = 5
 DEFAULT_HVAC_OPTIONS = 7
 DEFAULT_AUTO_MODE = 'all'
 DEFAULT_MIN_CYCLE_DURATION = ''
+DEFAULT_TEMP_STEP = 0.5
 
 #Others
 MAX_HVAC_OPTIONS = 8
 AUTO_MODE_OPTIONS = ['all', 'heating', 'cooling']
 INITIAL_HVAC_MODE_OPTIONS = ['', HVACMode.COOL, HVACMode.HEAT, HVACMode.OFF, HVACMode.HEAT_COOL]
 INITIAL_HVAC_MODE_OPTIONS_OPTFLOW = ['null', HVACMode.COOL, HVACMode.HEAT, HVACMode.OFF, HVACMode.HEAT_COOL]
+TEMP_STEP_OPTIONS = [0.1, 0.2, 0.5, 1.0]
 REGEX_STRING = r'((?P<hours>\d+?):(?=(\d+?:\d+?)))?((?P<minutes>\d+?):)?((?P<seconds>\d+?))?$'
 
 #Attributes

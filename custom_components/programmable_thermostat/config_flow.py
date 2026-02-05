@@ -28,13 +28,16 @@ from .config_schema import (
     CONF_TARGET,
     CONF_TOLERANCE,
     CONF_RELATED_CLIMATE,
-    CONF_MIN_CYCLE_DURATION
+    CONF_MIN_CYCLE_DURATION,
+    CONF_TEMP_STEP
 )
 from .helpers import (
 are_entities_valid,
 string_to_list,
 string_to_timedelta,
-null_data_cleaner
+null_data_cleaner,
+list_to_string,
+dict_to_string
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -114,7 +117,7 @@ class ProgrammableThermostatConfigFlow(config_entries.ConfigFlow):
                 self._data[CONF_MIN_CYCLE_DURATION] = string_to_timedelta(self._data[CONF_MIN_CYCLE_DURATION])
                 final_data = {}
                 for key in self._data.keys():
-                    if self._data[key] != "" and self._data[key] != []:
+                    if self._data[key] not in ("", [], None):
                         final_data.update({key: self._data[key]})
                 _LOGGER.info("Data are valid. Proceed with entity creation. - %s", final_data)
                 await self.async_set_unique_id(self._unique_id)
@@ -192,6 +195,8 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         _LOGGER.info("Show first form")
         if user_input is None or user_input == {}:
             user_input = self._data
+        user_input[CONF_HEATER] = list_to_string(user_input.get(CONF_HEATER))
+        user_input[CONF_COOLER] = list_to_string(user_input.get(CONF_COOLER))
         #4 is necessary for options. Check config_schema.py for explanations.
         return self.async_show_form(
             step_id="init",
@@ -235,7 +240,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 self._data[CONF_MIN_CYCLE_DURATION] = string_to_timedelta(self._data[CONF_MIN_CYCLE_DURATION])
                 final_data = {}
                 for key in self._data.keys():
-                    if self._data[key] != "" and self._data[key] != []:
+                    if self._data[key] not in ("", [], None):
                         final_data.update({key: self._data[key]})
                 _LOGGER.debug("Data are valid. Proceed with entity creation. - %s", final_data)
                 return self.async_create_entry(title="", data=final_data)
@@ -250,6 +255,10 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         _LOGGER.info("Show final form")
         if user_input is None or user_input == {}:
             user_input = self._data
+        user_input[CONF_RELATED_CLIMATE] = list_to_string(user_input.get(CONF_RELATED_CLIMATE))
+        user_input[CONF_MIN_CYCLE_DURATION] = dict_to_string(user_input.get(CONF_MIN_CYCLE_DURATION))
+        if user_input.get(CONF_TEMP_STEP) is None:
+            user_input[CONF_TEMP_STEP] = ""
         #5 is necessary for options. Check config_schema.py for explanations.
         return self.async_show_form(
             step_id="final",

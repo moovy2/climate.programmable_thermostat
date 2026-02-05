@@ -9,9 +9,8 @@ def are_entities_valid(self, entities_list) -> bool:
     """ To validate the existence of the entities list """
     entities = string_to_list(entities_list)
     for entity in entities:
-        try:
-            self.hass.states.get(entity).state
-        except:
+        state = self.hass.states.get(entity)
+        if state is None:
             return False
     return True
 
@@ -21,17 +20,28 @@ def string_to_list(string):
         return []
     return list(map(lambda x: x.strip(), string.split(",")))
 
+def list_to_string(values):
+    """Convert a list of entities into a comma-separated string."""
+    if not values:
+        return ""
+    if isinstance(values, str):
+        return values
+    return ", ".join(values)
+
 def string_to_timedelta(string):
     """ to convert a string with format hh:mm:ss or mm:ss into a timedelta data. """
-    string = re.match(REGEX_STRING, string)
     if string is None or string == "":
-        return []
-    string = string.groupdict()
-    return string
+        return None
+    match = re.match(REGEX_STRING, string)
+    if match is None:
+        return None
+    return match.groupdict()
 
 def dict_to_string(time_delta: dict = {}) -> str:
     """ to convert a dict like {'hours': hh, 'minutes': mm, 'seconds': ss} into a string hh:mm:ss.
         dict is expected sorted as hours-minutes-seconds """
+    if not time_delta:
+        return ""
     result = ''
     for key in time_delta.keys():
         if time_delta[key] == None:
@@ -42,6 +52,8 @@ def dict_to_string(time_delta: dict = {}) -> str:
 
 def dict_to_timedelta(string):
     """ to convert dict (mappingproxy) like {'hours': hh, 'minutes': mm, 'seconds': ss} into a timedelta's class element. """
+    if not string:
+        return None
     time_params = {}
     for name in string.keys():
         if string[name]:

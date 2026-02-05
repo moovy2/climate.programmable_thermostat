@@ -36,6 +36,7 @@ async def async_setup_entry(hass, config_entry: ConfigEntry):
         hass.async_create_task(hass.config_entries.async_remove(config_entry.entry_id))
         return True
     undo_listener = config_entry.add_update_listener(update_listener)
+    config_entry.async_on_unload(undo_listener)
     _LOGGER.info("Added new ProgrammableThermostat entity, entry_id: %s", config_entry.entry_id)
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORM)
 
@@ -44,8 +45,7 @@ async def async_setup_entry(hass, config_entry: ConfigEntry):
 async def async_unload_entry(hass, config_entry):
     """Unload a config entry."""
     _LOGGER.debug("async_unload_entry: %s", config_entry)
-    await asyncio.gather(hass.config_entries.async_forward_entry_unload(config_entry, PLATFORM))
-    return True
+    return await hass.config_entries.async_forward_entry_unload(config_entry, PLATFORM)
 
 async def update_listener(hass, config_entry):
     """Handle options update."""
