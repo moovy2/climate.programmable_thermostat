@@ -164,13 +164,13 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 
     def __init__(self, config_entry):
         """Initialize."""
-        super().__init__(config_entry)
+        self._config_entry = config_entry
         self._errors = {}
         self._data = {}
-        if self.config_entry.options == {}:
-            self._data.update(self.config_entry.data)
+        if self._config_entry.options == {}:
+            self._data.update(self._config_entry.data)
         else:
-            self._data.update(self.config_entry.options)
+            self._data.update(self._config_entry.options)
         _LOGGER.debug("_data to start options flow: %s", self._data)
 
     """ INITIATE CONFIG FLOW """
@@ -274,7 +274,8 @@ class EmptyOptions(config_entries.OptionsFlow):
 
     def __init__(self, config_entry):
         """Just set the config_entry parameter."""
-        super().__init__(config_entry)
+        self._config_entry = config_entry
+
 
 #####################################################
 ############## DATA VALIDATION FUCTION ##############
