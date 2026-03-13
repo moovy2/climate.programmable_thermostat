@@ -3,7 +3,7 @@ from homeassistant.components.climate import HVACMode
 from homeassistant.const import Platform
 
 #Generic
-VERSION = '8.6'
+VERSION = '9.0beta'
 DOMAIN = 'programmable_thermostat'
 PLATFORM = [Platform.CLIMATE]
 ISSUE_URL = 'https://github.com/custom-components/climate.programmable_thermostat/issues'
