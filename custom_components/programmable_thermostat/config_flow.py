@@ -276,6 +276,7 @@ class EmptyOptions(config_entries.OptionsFlow):
         """Just set the config_entry parameter."""
         self._config_entry = config_entry
 
+
 #####################################################
 ############## DATA VALIDATION FUCTION ##############
 #####################################################
