@@ -7,7 +7,7 @@ VERSION = '9.0beta'
 DOMAIN = 'programmable_thermostat'
 PLATFORM = [Platform.CLIMATE]
 ISSUE_URL = 'https://github.com/custom-components/climate.programmable_thermostat/issues'
-CONFIGFLOW_VERSION = 4
+CONFIGFLOW_VERSION = 5
 
 
 #Defaults
